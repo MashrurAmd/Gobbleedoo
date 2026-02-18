@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BoxCollider2D))]
 public class DraggablePiece : MonoBehaviour
 {
     public List<Vector2Int> shape = new List<Vector2Int>();
 
-    private Vector3 startPos;
+    private Vector3 startPosition;
     private Camera cam;
     private GameManager manager;
 
@@ -13,7 +14,7 @@ public class DraggablePiece : MonoBehaviour
     {
         cam = Camera.main;
         manager = FindObjectOfType<GameManager>();
-        startPos = transform.position;
+        startPosition = transform.position;
     }
 
     void OnMouseDrag()
@@ -33,7 +34,7 @@ public class DraggablePiece : MonoBehaviour
         }
         else
         {
-            transform.position = startPos;
+            transform.position = startPosition;
         }
     }
 }

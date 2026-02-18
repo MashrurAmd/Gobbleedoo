@@ -106,18 +106,4 @@ public class GridSystem
 
         return linesCleared;
     }
-
-    public bool HasAnyValidMove(List<Vector2Int> shape)
-    {
-        for (int x = 0; x < Width; x++)
-        {
-            for (int y = 0; y < Height; y++)
-            {
-                if (CanPlace(shape, new Vector2Int(x, y)))
-                    return true;
-            }
-        }
-
-        return false;
-    }
 }

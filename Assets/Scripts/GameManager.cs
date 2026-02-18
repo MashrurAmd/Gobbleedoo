@@ -4,12 +4,16 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    [Header("Grid Settings")]
     public int width = 10;
     public int height = 10;
     public float cellSize = 1f;
     public Transform gridOrigin;
 
-    public BlockPool pool;
+    [Header("Block Visual")]
+    public GameObject blockPrefab;
+
+    [Header("UI")]
     public TMP_Text scoreText;
 
     private GridSystem grid;
@@ -26,8 +30,10 @@ public class GameManager : MonoBehaviour
     public Vector2Int WorldToGrid(Vector3 worldPos)
     {
         Vector3 local = worldPos - gridOrigin.position;
+
         int x = Mathf.FloorToInt(local.x / cellSize);
         int y = Mathf.FloorToInt(local.y / cellSize);
+
         return new Vector2Int(x, y);
     }
 
@@ -44,14 +50,15 @@ public class GameManager : MonoBehaviour
         if (!grid.CanPlace(shape, basePos))
             return false;
 
+        // Place in data
         int placedCount = grid.Place(shape, basePos);
 
         // Spawn visuals
         for (int i = 0; i < shape.Count; i++)
         {
             Vector2Int pos = basePos + shape[i];
-            GameObject block = pool.Get();
-            block.transform.position = GridToWorld(pos);
+
+            GameObject block = Instantiate(blockPrefab, GridToWorld(pos), Quaternion.identity);
             activeBlocks[pos] = block;
         }
 
@@ -66,7 +73,7 @@ public class GameManager : MonoBehaviour
             {
                 if (activeBlocks.TryGetValue(cleared[i], out GameObject block))
                 {
-                    pool.Return(block);
+                    Destroy(block);
                     activeBlocks.Remove(cleared[i]);
                 }
             }
